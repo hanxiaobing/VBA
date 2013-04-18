@@ -1,0 +1,23 @@
+Sub 分析数据提取()
+'
+' 提取工作薄中所需数据到指定位置
+'
+Dim i, startrange, mark, myarea, c, r
+
+mark = Application.InputBox(prompt:="请输入储槽标识符", Type:=8)
+Set myarea = Application.InputBox(prompt:="请选择数据区域", Type:=8)
+
+c = myarea.Columns.Count
+r = myarea.Rows.Count
+
+Set startrange = Application.InputBox(prompt:="请选择粘贴位置", Type:=8)
+startrange.Select
+For i = 1 To Sheets.Count
+Sheets(i).Cells.Find(mark).Offset(2, 0).Resize(r, c).Copy
+ActiveSheet.Paste Destination:=Selection
+Selection.Offset(0, -1).Resize(r, 1) = WorksheetFunction.Substitute(Sheets(i).Name, ".", "-")
+Selection.Offset(r, 0).Select
+Next i
+
+'
+End Sub

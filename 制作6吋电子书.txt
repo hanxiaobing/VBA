@@ -1,0 +1,100 @@
+Sub six()
+
+    With ActiveDocument.PageSetup
+        .LineNumbering.Active = False
+        .Orientation = wdOrientPortrait
+        .TopMargin = CentimetersToPoints(0)
+        .BottomMargin = CentimetersToPoints(0)
+        .LeftMargin = CentimetersToPoints(0.3)
+        .RightMargin = CentimetersToPoints(0.3)
+        .Gutter = CentimetersToPoints(0)
+        .HeaderDistance = CentimetersToPoints(0)
+        .FooterDistance = CentimetersToPoints(0)
+        .PageWidth = CentimetersToPoints(9)
+        .PageHeight = CentimetersToPoints(11)
+        .FirstPageTray = wdPrinterDefaultBin
+        .OtherPagesTray = wdPrinterDefaultBin
+        .SectionStart = wdSectionNewPage
+        .OddAndEvenPagesHeaderFooter = False
+        .DifferentFirstPageHeaderFooter = False
+        .VerticalAlignment = wdAlignVerticalTop
+        .SuppressEndnotes = False
+        .MirrorMargins = False
+        .TwoPagesOnOne = False
+        .BookFoldPrinting = False
+        .BookFoldRevPrinting = False
+        .BookFoldPrintingSheets = 1
+        .GutterPos = wdGutterPosLeft
+        .LayoutMode = wdLayoutModeLineGrid
+    End With
+    Selection.WholeStory
+    With Selection.ParagraphFormat
+        .LeftIndent = CentimetersToPoints(0)
+        .RightIndent = CentimetersToPoints(0)
+        .SpaceBefore = 0
+        .SpaceBeforeAuto = False
+        .SpaceAfter = 0
+        .SpaceAfterAuto = False
+        .LineSpacingRule = wdLineSpaceExactly
+        .LineSpacing = 16
+        .WidowControl = False
+        .KeepWithNext = False
+        .KeepTogether = False
+        .PageBreakBefore = False
+        .NoLineNumber = False
+        .Hyphenation = True
+        .FirstLineIndent = CentimetersToPoints(0.35)
+        .OutlineLevel = wdOutlineLevelBodyText
+        .CharacterUnitLeftIndent = 0
+        .CharacterUnitRightIndent = 0
+        .CharacterUnitFirstLineIndent = 2
+        .LineUnitBefore = 0
+        .LineUnitAfter = 0
+        .FarEastLineBreakControl = True
+        .WordWrap = True
+        .HangingPunctuation = True
+        .HalfWidthPunctuationOnTopOfLine = False
+        .AddSpaceBetweenFarEastAndAlpha = True
+        .AddSpaceBetweenFarEastAndDigit = True
+        .BaseLineAlignment = wdBaselineAlignAuto
+    End With
+    With Selection.Font
+        .NameFarEast = "Î¢ÈíÑÅºÚ"
+        .NameAscii = "Î¢ÈíÑÅºÚ"
+        .NameOther = ""
+        .Name = ""
+        .Size = 10.5
+        .Italic = False
+        .Underline = wdUnderlineNone
+        .UnderlineColor = wdColorAutomatic
+        .StrikeThrough = False
+        .DoubleStrikeThrough = False
+        .Outline = False
+        .Emboss = False
+        .Shadow = False
+        .Hidden = False
+        .SmallCaps = False
+        .AllCaps = False
+        .Engrave = False
+        .Superscript = False
+        .Subscript = False
+        .Spacing = 0
+        .Scaling = 100
+        .Position = 0
+        .Kerning = 1
+        .Animation = wdAnimationNone
+        .DisableCharacterSpaceGrid = False
+        .EmphasisMark = wdEmphasisMarkNone
+    End With
+     If ActiveWindow.View.SplitSpecial <> wdPaneNone Then
+        ActiveWindow.Panes(2).Close
+    End If
+    If ActiveWindow.ActivePane.View.Type = wdNormalView Or ActiveWindow. _
+        ActivePane.View.Type = wdOutlineView Then
+        ActiveWindow.ActivePane.View.Type = wdPrintView
+    End If
+    ActiveWindow.ActivePane.View.SeekView = wdSeekCurrentPageHeader
+    Selection.WholeStory
+    Selection.Delete Unit:=wdCharacter, Count:=1
+    ActiveWindow.ActivePane.View.SeekView = wdSeekMainDocument
+End Sub
