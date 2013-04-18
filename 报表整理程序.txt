@@ -1,0 +1,117 @@
+﻿Sub 自动提取报表数据()
+
+Application.ScreenUpdating = False
+Dim riqi, path, i, daterow, labrow, maxdatecolumn, mindatacolumn
+
+Dim wb, arr, arr2
+labrow = 1
+daterow = 26
+'dateclum = 3
+maxdatecolumn = ActiveSheet.Range("A1").CurrentRegion.Columns.Count
+'maxdatecolumn = ActiveSheet.UsedRange.Columns.Count
+mindatecolumn = maxdatecolumn
+path = "\\192.168.1.150\可修改共享文件夹\报表\"
+For datecolumn = mindatecolumn To maxdatecolumn
+    riqi = Application.WorksheetFunction.Text(Cells(1, datecolumn), "yyyymmdd")
+    'riqi = InputBox("请输入8位日期，例如 20130412 ")
+    filename1 = Dir(path & "报表打印TAED日报表[" & riqi & "07*.xls") '获取文件名
+    filename2 = Dir(path & "报表打印TAED日报表2[" & riqi & "07*.xls")
+    filename3 = Dir(path & "报表打印TAED日报表3[" & riqi & "07*.xls")
+    
+    
+    If filename1 <> "" Then
+   
+    'If filename1 = "" Then
+    'MsgBox "找不到对应文件,请确认您输入的日期,并重试": Exit Sub
+    'End If
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    '处理报表1
+    Set wb = GetObject(path & filename1)
+    arr1 = wb.Sheets(1).UsedRange
+    arr2 = wb.Sheets(2).UsedRange
+    wb.Close
+    
+
+    For i = 1 To 7
+       With ActiveSheet
+                            .Cells(i + 1, 1).Value = arr1(labrow, i + 2)
+                            .Cells(i + 1, datecolumn).Value = arr1(daterow, i + 2)
+    End With
+    Next i
+    
+    For i = 1 To 6
+        With ActiveSheet
+                             .Cells(i + 8, 1).Value = arr2(labrow, i)
+                             .Cells(i + 8, datecolumn).Value = arr2(daterow, i)
+    End With
+    Next i
+    Else: MsgBox ("找不到" & riqi & "的报表1，请确认是否已保存")
+    End If
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    '处理报表2
+    If filename2 <> "" Then
+
+    Set wb = GetObject(path & filename2)
+    arr1 = wb.Sheets(1).UsedRange
+    arr2 = wb.Sheets(2).UsedRange
+    wb.Close
+    
+    For i = 1 To 8
+       With ActiveSheet
+                             .Cells(i + 13, 1).Value = arr1(labrow, i + 2)
+                             .Cells(i + 13, datecolumn).Value = arr1(daterow, i + 2)
+    End With
+    Next i
+    For i = 1 To 8
+        With ActiveSheet
+                            .Cells(i + 21, 1).Value = arr2(labrow, i)
+                            .Cells(i + 21, datecolumn).Value = arr2(daterow, i)
+    End With
+    Next i
+    Else: MsgBox ("找不到" & riqi & "的报表2，请确认是否已保存")
+    End If
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    '处理报表3
+    If filename3 <> "" Then
+
+    Set wb = GetObject(path & filename3)
+    arr1 = wb.Sheets(1).UsedRange
+    arr2 = wb.Sheets(2).UsedRange
+    arr3 = wb.Sheets(3).UsedRange
+    wb.Close
+    
+    For i = 1 To 8
+       With ActiveSheet
+                             .Cells(i + 29, 1).Value = arr1(labrow, i + 2)
+                             .Cells(i + 29, datecolumn).Value = arr1(daterow, i + 2)
+    End With
+    Next i
+    For i = 1 To 9
+        With ActiveSheet
+                            .Cells(i + 37, 1).Value = arr2(labrow, i)
+                            .Cells(i + 37, datecolumn).Value = arr2(daterow, i)
+                            
+    End With
+    Next i
+    
+    For i = 1 To 5
+        With ActiveSheet
+                            .Cells(i + 46, 1).Value = arr3(labrow, i)
+                            .Cells(i + 46, datecolumn).Value = arr3(daterow, i)
+    End With
+    Next i
+    With ActiveSheet
+                            .Cells(35, datecolumn).Value = Cells(35, datecolumn).Value * 1000
+                            .Cells(36, datecolumn).Value = Cells(36, datecolumn).Value * 1000
+                            .Cells(37, datecolumn).Value = Cells(37, datecolumn).Value * 1000
+                            .Cells(38, datecolumn).Value = Cells(38, datecolumn).Value * 1000
+    End With
+    Else: MsgBox ("找不到" & riqi & "的报表3，请确认是否已保存")
+    End If
+Next datecolumn
+    
+
+End Sub
+
+
+
