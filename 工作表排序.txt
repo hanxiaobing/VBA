@@ -1,0 +1,46 @@
+﻿Option Explicit
+'作者：杨仕航'
+'日期：2016-10-13'
+ 
+Public Sub 工作表升序()
+    WorkSheetSorted False
+End Sub
+ 
+Public Sub 工作表降序()
+    WorkSheetSorted True
+End Sub
+ 
+'工作表升序(reverse=False)或降序(reverse=True)排列'
+Public Function WorkSheetSorted(Optional reverse As Boolean = False)
+    Dim i As Long, SortedIndex As Long
+ 
+    '从第二个表格开始判断，进行名称比较'
+    For i = 2 To ActiveWorkbook.Sheets.Count
+        SortedIndex = GetSortedIndex(i, reverse)
+        If SortedIndex < i Then
+            ActiveWorkbook.Sheets(i).Move ActiveWorkbook.Sheets(SortedIndex)
+        End If
+    Next
+End Function
+ 
+'获取排序的位置'
+Private Function GetSortedIndex(CurrentSheetIndex As Long, reverse As Boolean)
+    Dim CheckSheetName As String
+    Dim CurrentSheetName As String
+    Dim i As Long, start_num As Long, end_num As Long, step_num As Long
+    
+    '当前表名'
+    CurrentSheetName = ActiveWorkbook.Sheets(CurrentSheetIndex).Name
+    
+    '比较表名'
+    For i = 1 To CurrentSheetIndex - 1
+        CheckSheetName = ActiveWorkbook.Sheets(i).Name
+        
+        If (CheckSheetName > CurrentSheetName) <> reverse Then
+            GetSortedIndex = i
+            Exit For
+        End If
+    Next
+    
+    GetSortedIndex = i
+End Function
